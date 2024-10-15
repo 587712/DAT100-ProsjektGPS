@@ -18,7 +18,7 @@ public class ShowProfile extends EasyGraphics {
 	private static final int MAXBARHEIGHT = 500; // assume no height above 500 meters
 	
 	private GPSPoint[] gpspoints;
-
+	
 	public ShowProfile() {
 
 		String filename = JOptionPane.showInputDialog("GPS data filnavn (uten .csv): ");
@@ -46,10 +46,13 @@ public class ShowProfile extends EasyGraphics {
 		
 		int x = MARGIN; // første høyde skal tegnes ved MARGIN
 		int y;
-		
-		// TODO 
-		throw new UnsupportedOperationException(TODO.method());
-		
+
+		for (int i = 0; i < gpspoints.length; i++) {
+			y = ybase - (int)gpspoints[i].getElevation();
+			setColor(0, 0, 255);
+			drawLine(x, ybase, x, y);
+			x += 2;
+		}
 
 	}
 
