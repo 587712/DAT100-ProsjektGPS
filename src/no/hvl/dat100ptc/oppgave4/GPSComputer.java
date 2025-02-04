@@ -31,26 +31,44 @@ public class GPSComputer {
 
 		double distance = 0;
 
-		throw new UnsupportedOperationException(TODO.method());
-
 		// TODO
+		// TODO - START
+		for(int i = 1; i < gpspoints.length; i++) {
+			distance += GPSUtils.distance(gpspoints[i], gpspoints[i-1]);
+		}
+		
+		return distance;
+		//TODO SLUTT
 
 	}
 
 	public double totalElevation() {
-
-		double elevation = 0;
-
-		throw new UnsupportedOperationException(TODO.method());
 		
-		// TODO 
+		double elevation = 0;
+		
+		// TODO
+		// TODO - START
+		for(int i = 1; i < gpspoints.length; i++) {
+			if(gpspoints[i].getElevation() > gpspoints[i - 1].getElevation()) {
+				elevation += gpspoints[i].getElevation() - gpspoints[i - 1].getElevation();
+			}
+		}
+		
+		return elevation;
+		// TODO SLUTT
 		
 	}
 
 	public int totalTime() {
 
 		// TODO
-		throw new UnsupportedOperationException(TODO.method());
+		// TODO - START
+		int tid;
+		
+		tid = gpspoints[gpspoints.length - 1].getTime() - gpspoints[0].getTime();
+		
+		return tid;
+		// TODO SLUTT
 		
 	}
 		
@@ -60,7 +78,13 @@ public class GPSComputer {
 		double[] speeds = new double[gpspoints.length-1];
 		
 		// TODO
-		throw new UnsupportedOperationException(TODO.method());
+		// TODO - START
+		for(int i = 1; i < gpspoints.length; i++) {
+			speeds[i - 1] = GPSUtils.speed(gpspoints[i - 1], gpspoints[i]);
+		}
+		
+		return speeds;
+		// TODO SLUTT
 		
 	}
 	
@@ -69,7 +93,18 @@ public class GPSComputer {
 		double maxspeed = 0;
 		
 		// TODO 
-		throw new UnsupportedOperationException(TODO.method());
+		// TODO - START
+		double[] speeds = speeds();
+		maxspeed = speeds[0];
+		
+		for(int i = 1; i < speeds.length; i++) {
+			if(speeds[i] > maxspeed) {
+				maxspeed = speeds[i];
+			}
+		}
+		
+		return maxspeed;
+		// TODO SLUTT
 	
 	}
 
@@ -78,7 +113,11 @@ public class GPSComputer {
 		double average = 0;
 		
 		// TODO
-		throw new UnsupportedOperationException(TODO.method());
+		// TODO - START
+		average = totalDistance()/totalTime();
+		
+		return average;
+		// TODO SLUTT
 		
 	}
 
@@ -94,7 +133,29 @@ public class GPSComputer {
 		double speedmph = speed * MS;
 
 		// TODO 
-		throw new UnsupportedOperationException(TODO.method());
+		// TODO - START
+		if(speedmph > 20.0) {
+			met = 16.0;
+		}
+		else if(speedmph >= 16.0) {
+			met = 12.0;
+		}
+		else if(speedmph >= 14.0) {
+			met = 10.0;
+		}
+		else if(speedmph >= 12.0) {
+			met = 8.0;
+		}
+		else if(speedmph >= 10.0) {
+			met = 6.0;
+		}
+		else {
+			met = 4.0;
+		}
+		kcal = met * weight * secs / 3600;
+		
+		return kcal;
+		// TODO SLUTT
 		
 	}
 
@@ -103,7 +164,13 @@ public class GPSComputer {
 		double totalkcal = 0;
 
 		// TODO 
-		throw new UnsupportedOperationException(TODO.method());
+		// TODO - START
+		for(int i = 1; i < gpspoints.length; i++) {
+			totalkcal += kcal(weight,gpspoints[i].getTime() - gpspoints[i - 1].getTime(),GPSUtils.speed(gpspoints[i - 1],gpspoints[i]));
+		}
+		
+		return totalkcal;
+		//TODO SLUTT
 		
 	}
 	
@@ -112,8 +179,39 @@ public class GPSComputer {
 	public void displayStatistics() {
 
 		// TODO 
-		throw new UnsupportedOperationException(TODO.method());
+		// TODO - START
+		String stats = "";
+		stats += "==============================================\n";
+		stats += String.format("%-15s %-3s %-10s %s\n", "Total time", ":", GPSUtils.formatTime(totalTime()), "");
+		stats += String.format("%-15s %-5s %-10.2f %s\n", "Total distance", ":", totalDistance() / 1000, "km");
+		stats += String.format("%-15s %-5s %-10.2f %s\n", "Total elevation", ":", totalElevation(), "m");
+		stats += String.format("%-15s %-5s %-10.2f %s\n", "Max speed", ":", maxSpeed() * 3.6, "km/t");
+		stats += String.format("%-15s %-5s %-10.2f %s\n", "Average speed", ":", averageSpeed() * 3.6, "km/t");
+		stats += String.format("%-15s %-5s %-10.2f %s\n", "Energy", ":", totalKcal(WEIGHT), "kcal");
+		stats += "==============================================";
+		System.out.println(stats);
+		// TODO SLUTT
 		
 	}
+	
+	// TODO
+	// TODO - START
+	/*
+	public double[] climbs() {
+		
+		double[] climb = new double[gpspoints.length - 1];
+		
+		for(int i = 1; i < gpspoints.length; i++) {
+			
+			climb[i - 1] = gpspoints[i].getElevation() - gpspoints[i - 1].getElevation();
+			System.out.println(climb[i - 1]);
+			
+		}
+		
+		return climb;
+		
+	}
+	// TODO SLUTT
+	 */
 
 }
